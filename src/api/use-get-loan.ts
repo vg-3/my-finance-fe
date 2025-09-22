@@ -1,4 +1,4 @@
-import axios from "axios";
+import useAxiosPrivate from "@/hooks/use-axios-private";
 import { useQuery } from "@tanstack/react-query";
 
 export type Payment = {
@@ -31,19 +31,14 @@ export type Loan = {
   remainingAmount: number;
 };
 
-export const getLoan = async (loanId: number) => {
-  try {
-    const res = await axios.get(`http://localhost:8080/api/v1/loans/${loanId}`);
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const useGetLoan = (loanId: number) => {
+  const axiosPrivate = useAxiosPrivate();
   const query = useQuery({
     queryKey: ["loan", loanId],
-    queryFn: () => getLoan(loanId),
+    queryFn: async () => {
+      const res = await axiosPrivate.get(`/loans/${loanId}`);
+      return res.data;
+    },
   });
   return query;
 };

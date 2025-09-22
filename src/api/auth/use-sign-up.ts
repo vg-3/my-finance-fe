@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { axiosPrivate } from "../useAxios";
+import { axiosPrivate } from "../../hooks/axios";
 
 export interface SignUpRequest {
   firstName: string;

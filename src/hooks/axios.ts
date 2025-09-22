@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://my-finance-be-latest.onrender.com/api/v1";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default axios.create({
   baseURL: BASE_URL,

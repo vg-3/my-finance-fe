@@ -1,4 +1,4 @@
-import axios from "axios";
+import useAxiosPrivate from "@/hooks/use-axios-private";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export interface LoanCreateRequest {
@@ -9,16 +9,15 @@ export interface LoanCreateRequest {
   userId: number;
 }
 
-const createLoan = async (newLoan: LoanCreateRequest) => {
-  const res = await axios.post("http://localhost:8080/api/v1/loans", newLoan);
-  return res.data;
-};
-
 export const useCreateLoan = () => {
+  const axiosPrivate = useAxiosPrivate();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: createLoan,
+    mutationFn: async (newLoan: LoanCreateRequest) => {
+      const res = await axiosPrivate.post("/loans", newLoan);
+      return res.data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["loans"] });
     },

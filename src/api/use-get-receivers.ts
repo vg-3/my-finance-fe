@@ -1,17 +1,14 @@
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-
-const getReceivers = async (lenderId: number) => {
-  const res = await axios.get(
-    `http://localhost:8080/api/v1/receiver/${lenderId}`
-  );
-  return res.data;
-};
+import useAxiosPrivate from "@/hooks/use-axios-private";
 
 export const useGetReceivers = (lenderId: number) => {
+  const axiosPrivate = useAxiosPrivate();
   const query = useQuery({
     queryKey: ["receivers", lenderId],
-    queryFn: () => getReceivers(lenderId),
+    queryFn: async () => {
+      const res = await axiosPrivate.get(`/receiver/${lenderId}`);
+      return res.data;
+    },
   });
   return query;
 };

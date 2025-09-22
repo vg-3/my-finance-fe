@@ -12,14 +12,7 @@ export function AuthInitializer({ children }: { children: React.ReactNode }) {
   const { mutate: refresh, isPending } = useRefreshToken();
 
   useEffect(() => {
-    refresh(undefined, {
-      onSuccess: (data) => {
-        setAuth({ accessToken: data.accessToken, user: data.user });
-      },
-      onError: () => {
-        router.replace("/sign-in");
-      },
-    });
+    refresh();
   }, [refresh, setAuth, router]);
 
   if (isPending)
