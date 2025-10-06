@@ -17,6 +17,8 @@ import { CustomSelect } from "./custom-select";
 import { Input } from "./ui/input";
 import { Loan } from "@/api/use-get-loan";
 import { toast } from "sonner";
+import { DatePicker } from "./date-picker";
+import { toLocalDateTimeString } from "@/lib/utils";
 
 interface NewPaymentFormProps {
   loan: Loan;
@@ -38,6 +40,7 @@ export const NewPaymentForm = ({ loan, closeForm }: NewPaymentFormProps) => {
     defaultValues: {
       amount: "",
       paymentType: "",
+      paymentDate: new Date(),
     },
   });
 
@@ -50,9 +53,8 @@ export const NewPaymentForm = ({ loan, closeForm }: NewPaymentFormProps) => {
     const payment: AddPaymentRequest = {
       ...values,
       loanId: loan.loanId,
+      paymentDate: toLocalDateTimeString(values.paymentDate),
     };
-
-    console.log(payment);
 
     addPayment.mutate(payment, {
       onSuccess: () => {
@@ -98,6 +100,11 @@ export const NewPaymentForm = ({ loan, closeForm }: NewPaymentFormProps) => {
                   />
                 );
               }}
+            />
+            <FormField
+              control={form.control}
+              name="paymentDate"
+              render={({ field }) => <DatePicker field={field} />}
             />
             {form.formState.errors.paymentType && (
               <p className="text-destructive text-sm">

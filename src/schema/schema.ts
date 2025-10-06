@@ -7,6 +7,7 @@ export const createLoanSchema = z.object({
     .min(1, { message: "Principal amount is required" }),
   interestRate: z.string().min(1, { message: "Interest rate is required" }),
   loanType: z.enum(LoanType),
+  startDate: z.date().min(1, { message: "Start date is required" }),
   receiver: z.string().min(1, { message: "Receiver is required" }),
 });
 
@@ -18,6 +19,7 @@ export const createReceiverSchema = z.object({
 export const addPaymentSchema = z.object({
   amount: z.string().min(1, { message: "Amount is required" }),
   paymentType: z.string().min(1, { message: "Payment Type is required" }),
+  paymentDate: z.date().min(1, { message: "Payment date is required" }),
 });
 
 export const signInSchema = z.object({

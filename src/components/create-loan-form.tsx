@@ -1,6 +1,5 @@
 "use client";
 
-import z from "zod";
 import { LoanCreateRequest, useCreateLoan } from "@/api/use-create-loan";
 import { useGetReceivers } from "@/api/use-get-receivers";
 import {
@@ -19,8 +18,11 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import z from "zod";
 import { CustomSelect } from "./custom-select";
+import { DatePicker } from "./date-picker";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+import { toLocalDateTimeString } from "@/lib/utils";
 
 export const CreateLoanForm = () => {
   const router = useRouter();
@@ -32,6 +34,7 @@ export const CreateLoanForm = () => {
     defaultValues: {
       principalAmount: "",
       loanType: LoanType.WEEKLY,
+      startDate: new Date(),
       interestRate: "",
       receiver: "",
     },
@@ -42,6 +45,7 @@ export const CreateLoanForm = () => {
       ...values,
       receiverId: parseInt(values.receiver),
       userId: 1,
+      startDate: toLocalDateTimeString(values.startDate),
     };
 
     createLoan.mutate(loan, {
@@ -80,6 +84,13 @@ export const CreateLoanForm = () => {
                     </FormControl>
                     <FormMessage />
                   </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="startDate"
+                render={({ field }) => (
+                  <DatePicker field={field} label="Start Date" />
                 )}
               />
               <FormField

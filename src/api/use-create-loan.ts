@@ -7,6 +7,7 @@ export interface LoanCreateRequest {
   loanType: string;
   receiverId: number;
   userId: number;
+  startDate: string;
 }
 
 export const useCreateLoan = () => {

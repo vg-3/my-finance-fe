@@ -6,6 +6,7 @@ export interface AddPaymentRequest {
   loanId: number;
   amount: string;
   paymentType: string;
+  paymentDate: string;
 }
 
 export const useAddPayment = () => {
