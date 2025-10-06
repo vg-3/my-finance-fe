@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { toLocalDateTimeString } from "@/lib/utils";
 import { LoanType } from "@/schema/enum";
 import { createLoanSchema } from "@/schema/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,12 +23,17 @@ import z from "zod";
 import { CustomSelect } from "./custom-select";
 import { DatePicker } from "./date-picker";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
-import { toLocalDateTimeString } from "@/lib/utils";
+import { User } from "@/store/store";
 
-export const CreateLoanForm = () => {
+interface CreateLoanFormProps {
+  user: User;
+}
+
+export const CreateLoanForm = ({ user }: CreateLoanFormProps) => {
   const router = useRouter();
   const createLoan = useCreateLoan();
-  const { data: receivers, isLoading } = useGetReceivers(1);
+
+  const { data: receivers, isLoading } = useGetReceivers(user.id);
 
   const form = useForm<z.infer<typeof createLoanSchema>>({
     resolver: zodResolver(createLoanSchema),

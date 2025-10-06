@@ -3,9 +3,17 @@
 import { useGetLoans } from "@/api/use-get-loans";
 import { LoanCard } from "./loan-card";
 import { Loan } from "@/api/use-get-loan";
+import { useAuthStore } from "@/store/store";
+import { redirect } from "next/navigation";
 
 const Loans = () => {
-  const { data: loans, isLoading } = useGetLoans(1);
+  const user = useAuthStore((state) => state.user);
+
+  if (!user) {
+    redirect("/sign-in");
+  }
+
+  const { data: loans, isLoading } = useGetLoans(user.id);
 
   if (isLoading) {
     return <p>Loading...</p>;

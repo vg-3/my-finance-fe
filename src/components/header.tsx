@@ -1,9 +1,20 @@
 import { formatToINR } from "@/lib/utils";
 import UserAvatar from "./avatar";
 import { useAuthStore } from "@/store/store";
+import { redirect } from "next/navigation";
+import { useGetLoans } from "@/api/use-get-loans";
+import { Loan } from "@/api/use-get-loan";
 
 const Header = () => {
   const user = useAuthStore((state) => state.user);
+  if (!user) {
+    redirect("/sign-in");
+  }
+  const { data: loans } = useGetLoans(user.id);
+
+  const totalOutstanding =
+    loans?.reduce((acc: number, loan: Loan) => acc + loan.remainingAmount, 0) ||
+    0;
 
   return (
     <div className="p-4">
@@ -18,7 +29,7 @@ const Header = () => {
         <div className="text-right">
           <p className="text-sm text-gray-400">Total Outstanding</p>
           <p className="text-2xl font-bold text-sky-400">
-            {formatToINR(12450)}
+            {formatToINR(totalOutstanding)}
           </p>
         </div>
       </div>
