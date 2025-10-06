@@ -47,7 +47,7 @@ export const SignInFrom = () => {
   return (
     <div className="bg-[#1b1b1b] px-4 py-8 rounded-lg w-full h-full">
       <h1 className="text-xl text-white font-bold text-center pb-4">
-        Welocome back!!
+        Welcome back!!
       </h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
